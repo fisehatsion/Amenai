@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>amenai.net | Amen AI</title>
+<title>amenai.github.io | Amen AI</title>
 
 <style>
 
 html,body{
+
 margin:0;
 padding:0;
 width:100%;
@@ -17,6 +20,7 @@ background:black;
 font-family:Arial;
 overflow:hidden;
 color:cyan;
+
 }
 
 /* SPLASH */
@@ -53,7 +57,7 @@ animation:spin 1s linear infinite;
 
 }
 
-/* MAIN AI */
+/* MAIN */
 
 #main{
 
@@ -142,6 +146,7 @@ text-align:center;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -150,7 +155,7 @@ text-align:center;
 
 <div id="splash">
 
-<h1>amenai.net</h1>
+<h1>amenai.github.io</h1>
 
 <div class="loader"></div>
 
@@ -169,6 +174,7 @@ text-align:center;
 <div id="head">
 
 <img id="face"
+
 src="https://i.imgur.com/8Km9tLL.png">
 
 </div>
@@ -179,7 +185,7 @@ src="https://i.imgur.com/8Km9tLL.png">
 
 <div id="chat">
 
-Amen: Hello. Welcome to amenai.net
+Amen: Hello. Welcome to amenai.github.io
 
 </div>
 
@@ -191,8 +197,9 @@ Amen: Hello. Welcome to amenai.net
 
 setTimeout(()=>{
 
-splash.style.display="none";
-main.style.display="block";
+document.getElementById("splash").style.display="none";
+
+document.getElementById("main").style.display="block";
 
 startAI();
 
@@ -205,19 +212,33 @@ let recognition;
 
 function startAI(){
 
-const SpeechRecognition =
-window.SpeechRecognition ||
+const SpeechRecognition=
+
+window.SpeechRecognition||
+
 window.webkitSpeechRecognition;
 
-recognition = new SpeechRecognition();
+if(!SpeechRecognition){
+
+alert("Speech not supported");
+
+return;
+
+}
+
+recognition=new SpeechRecognition();
 
 recognition.continuous=true;
 
 recognition.onresult=(event)=>{
 
-let text=event.results[event.results.length-1][0].transcript;
+let text=
 
-chat.innerHTML="You: "+text;
+event.results[event.results.length-1][0].transcript;
+
+document.getElementById("chat").innerHTML=
+
+"You: "+text;
 
 reply(text);
 
@@ -234,21 +255,23 @@ function reply(text){
 
 let answer="I understand";
 
-if(text.includes("hello"))
+if(text.toLowerCase().includes("hello"))
 
-answer="Hello, I am Amen from amenai.net";
+answer="Hello, I am Amen from amenai.github.io";
 
-if(text.includes("name"))
+if(text.toLowerCase().includes("name"))
 
 answer="My name is Amen";
 
-if(text.includes("time"))
+if(text.toLowerCase().includes("time"))
 
 answer=new Date().toLocaleTimeString();
 
 speak(answer);
 
-chat.innerHTML+="<br>Amen: "+answer;
+document.getElementById("chat").innerHTML+=
+
+"<br>Amen: "+answer;
 
 }
 
