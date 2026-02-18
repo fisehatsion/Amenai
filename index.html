@@ -3,10 +3,9 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>amenai.github.io | Amen AI</title>
+<title>Amen AI</title>
 
 <style>
 
@@ -23,8 +22,6 @@ color:cyan;
 
 }
 
-/* SPLASH */
-
 #splash{
 
 position:fixed;
@@ -35,7 +32,6 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-z-index:10;
 
 }
 
@@ -52,12 +48,9 @@ animation:spin 1s linear infinite;
 
 @keyframes spin{
 
-0%{transform:rotate(0deg);}
 100%{transform:rotate(360deg);}
 
 }
-
-/* MAIN */
 
 #main{
 
@@ -67,20 +60,6 @@ height:100%;
 
 }
 
-/* background */
-
-#bg{
-
-position:fixed;
-width:100%;
-height:100%;
-background:radial-gradient(circle, #001111, black);
-z-index:-1;
-
-}
-
-/* body */
-
 #body{
 
 position:absolute;
@@ -89,18 +68,8 @@ top:50%;
 transform:translate(-50%,-50%);
 width:200px;
 height:400px;
-animation:float 4s infinite;
 
 }
-
-@keyframes float{
-
-0%,100%{transform:translate(-50%,-50%);}
-50%{transform:translate(-50%,-55%);}
-
-}
-
-/* head */
 
 #head{
 
@@ -113,15 +82,6 @@ box-shadow:0 0 30px cyan;
 
 }
 
-#face{
-
-width:100%;
-height:100%;
-
-}
-
-/* torso */
-
 #torso{
 
 width:100px;
@@ -131,8 +91,6 @@ margin:auto;
 border-radius:20px;
 
 }
-
-/* chat */
 
 #chat{
 
@@ -151,11 +109,9 @@ text-align:center;
 
 <body>
 
-<!-- SPLASH -->
-
 <div id="splash">
 
-<h1>amenai.github.io</h1>
+<h1 id="domainName">Loading...</h1>
 
 <div class="loader"></div>
 
@@ -163,19 +119,13 @@ text-align:center;
 
 </div>
 
-<!-- MAIN -->
-
 <div id="main">
-
-<div id="bg"></div>
 
 <div id="body">
 
 <div id="head">
 
-<img id="face"
-
-src="https://i.imgur.com/8Km9tLL.png">
+<img src="https://i.imgur.com/8Km9tLL.png" width="100%">
 
 </div>
 
@@ -183,48 +133,46 @@ src="https://i.imgur.com/8Km9tLL.png">
 
 </div>
 
-<div id="chat">
-
-Amen: Hello. Welcome to amenai.github.io
-
-</div>
+<div id="chat"></div>
 
 </div>
 
 <script>
 
-/* splash */
+/* GET REAL DOMAIN */
+
+let domain = window.location.host;
+
+document.getElementById("domainName").innerHTML = domain;
+
+document.getElementById("chat").innerHTML =
+"Amen: Hello. Welcome to " + domain;
+
+
+/* SPLASH */
 
 setTimeout(()=>{
 
-document.getElementById("splash").style.display="none";
+splash.style.display="none";
 
-document.getElementById("main").style.display="block";
+main.style.display="block";
 
 startAI();
 
 },3000);
 
 
-/* voice */
+/* VOICE */
 
 let recognition;
 
 function startAI(){
 
-const SpeechRecognition=
-
-window.SpeechRecognition||
-
+const SpeechRecognition =
+window.SpeechRecognition ||
 window.webkitSpeechRecognition;
 
-if(!SpeechRecognition){
-
-alert("Speech not supported");
-
-return;
-
-}
+if(!SpeechRecognition)return;
 
 recognition=new SpeechRecognition();
 
@@ -232,13 +180,9 @@ recognition.continuous=true;
 
 recognition.onresult=(event)=>{
 
-let text=
+let text=event.results[event.results.length-1][0].transcript;
 
-event.results[event.results.length-1][0].transcript;
-
-document.getElementById("chat").innerHTML=
-
-"You: "+text;
+chat.innerHTML="You: "+text;
 
 reply(text);
 
@@ -249,42 +193,38 @@ recognition.start();
 }
 
 
-/* reply */
+/* AI REPLY */
 
 function reply(text){
 
-let answer="I understand";
+let answer="I am Amen from " + domain;
 
-if(text.toLowerCase().includes("hello"))
+if(text.includes("hello"))
 
-answer="Hello, I am Amen from amenai.github.io";
+answer="Hello! Welcome to " + domain;
 
-if(text.toLowerCase().includes("name"))
+if(text.includes("name"))
 
 answer="My name is Amen";
 
-if(text.toLowerCase().includes("time"))
+if(text.includes("time"))
 
 answer=new Date().toLocaleTimeString();
 
 speak(answer);
 
-document.getElementById("chat").innerHTML+=
-
-"<br>Amen: "+answer;
+chat.innerHTML+="<br>Amen: "+answer;
 
 }
 
 
-/* speak */
+/* SPEAK */
 
 function speak(text){
 
 let speech=new SpeechSynthesisUtterance(text);
 
-speech.pitch=1.5;
-
-speech.rate=1;
+speech.pitch=1.4;
 
 speechSynthesis.speak(speech);
 
